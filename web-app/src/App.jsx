@@ -1,6 +1,6 @@
 // src/App.jsx
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes,Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import Login from './pages/Login';
@@ -18,20 +18,18 @@ function App() {
 
   return (
     <Router>
-      <div className={`app ${currentTheme}`}>
-        <Header onToggleTheme={toggleTheme} currentTheme={currentTheme} />
-        <Sidebar />
-        <div className="main-content">
-          <Routes>
+        <Routes>
+            {/* Default route to login page */}
+            <Route path="/" element={<Navigate to="/login" />} />
+
+            {/* Login page */}
             <Route path="/login" element={<Login />} />
+
+            {/* Onebox page (if needed for local testing or further navigation) */}
             <Route path="/onebox" element={<Onebox />} />
-            <Route path="/reply" element={<Reply />} />
-            {/* Add more routes as needed */}
-          </Routes>
-        </div>
-      </div>
+        </Routes>
     </Router>
-  );
-}
+);
+};
 
 export default App;
