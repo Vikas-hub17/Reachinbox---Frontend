@@ -1,0 +1,42 @@
+/* Light Theme Styles */
+
+body {
+    background-color: #ffffff;
+    color: #000000;
+    font-family: Arial, sans-serif;
+  }
+  
+  header {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .sidebar {
+    background-color: #f9f9f9;
+    color: #333333;
+  }
+  
+  .text-editor-container {
+    border: 1px solid #dddddd;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: #ffffff;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  .card {
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+  }
+  
+  input, textarea {
+    border: 1px solid #cccccc;
+    background-color: #ffffff;
+    color: #333333;
+  }
+  
