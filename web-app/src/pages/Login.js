@@ -1,30 +1,30 @@
 // src/pages/Login.js
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { loginUser } from '../api';
+import { useNavigate } from 'react-router-dom';
+import { login } from '../api'; // Ensure the path to the API module is correct
 
-function Login() {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const history = useHistory();
+  const navigate = useNavigate(); // Updated from useHistory
 
   const handleLogin = async () => {
     try {
-      const response = await loginUser({ email, password });
-      // Handle authentication (e.g., storing token)
-      history.push('/google-login');
+      await login({ email, password });
+      navigate('/onebox'); // Redirect after login
     } catch (error) {
       console.error('Login failed:', error);
     }
   };
 
   return (
-    <div className="login-container">
-      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+    <div>
+      <h2>Login</h2>
+      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
       <button onClick={handleLogin}>Login</button>
     </div>
   );
-}
+};
 
 export default Login;
