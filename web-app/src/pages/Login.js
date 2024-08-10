@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../api'; // Ensure the path to the API module is correct
+import './Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');

@@ -21,3 +21,29 @@ export const sendReply = async (replyData) => {
     body: JSON.stringify(replyData),
   }).then(response => response.json());
 };
+
+// src/api.js
+
+export const fetchOneboxList = async () => {
+  const response = await fetch('/api/onebox/list');
+  if (!response.ok) {
+    throw new Error('Network response was not ok.');
+  }
+  return response.json();
+};
+
+export const fetchThread = async (threadId) => {
+  const response = await fetch(`/api/onebox/${threadId}`);
+  if (!response.ok) {
+    throw new Error('Network response was not ok.');
+  }
+  return response.json();
+};
+
+export const deleteThread = async (threadId) => {
+  const response = await fetch(`/api/onebox/${threadId}`, { method: 'DELETE' });
+  if (!response.ok) {
+    throw new Error('Network response was not ok.');
+  }
+  return response.json();
+};

@@ -1,57 +1,38 @@
 // src/pages/Onebox.js
-import React, { useEffect, useState } from 'react';
-// src/pages/Onebox.js
-import { fetchOneboxData } from '../api'; // Ensure the path is correct
+import React, { useState, useEffect } from 'react';
+import { fetchOneboxList, fetchThread, deleteThread } from '../api'; // Import functions
+import './Onebox.css';
 
-
-function Onebox() {
+const Onebox = () => {
   const [threads, setThreads] = useState([]);
-  const [selectedThread, setSelectedThread] = useState(null);
 
   useEffect(() => {
     const loadThreads = async () => {
       try {
-        const response = await fetchOneboxList();
-        setThreads(response.data);
+        const data = await fetchOneboxList();
+        setThreads(data);
       } catch (error) {
-        console.error('Failed to fetch threads:', error);
+        console.error('Error fetching threads:', error);
       }
     };
 
     loadThreads();
   }, []);
 
-  const handleSelectThread = async (threadId) => {
-    try {
-      const response = await fetchThread(threadId);
-      setSelectedThread(response.data);
-    } catch (error) {
-      console.error('Failed to fetch thread:', error);
-    }
-  };
-
-  const handleDeleteThread = async (threadId) => {
+  const handleDelete = async (threadId) => {
     try {
       await deleteThread(threadId);
-      setThreads((prev) => prev.filter((thread) => thread.id !== threadId));
+      setThreads(threads.filter(thread => thread.id !== threadId));
     } catch (error) {
-      console.error('Failed to delete thread:', error);
+      console.error('Error deleting thread:', error);
     }
   };
 
   return (
-    <div className="onebox-container">
-      <ul>
-        {threads.map((thread) => (
-          <li key={thread.id} onClick={() => handleSelectThread(thread.id)}>
-            {thread.subject}
-            <button onClick={() => handleDeleteThread(thread.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-      {selectedThread && <div>{selectedThread.body}</div>}
+    <div>
+      {/* Render threads */}
     </div>
   );
-}
+};
 
 export default Onebox;

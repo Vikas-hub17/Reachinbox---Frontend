@@ -1,13 +1,16 @@
 // src/components/Header.js
 import React from 'react';
+import './Header.css';
 
-const Header = ({ onToggleTheme, currentTheme }) => {
+const Header = () => {
   return (
-    <header className="header" style={{backgroundColor: '#f8f9fa', padding:1}}>
-      <h1>ReachInbox</h1>
-      <button onClick={onToggleTheme}>
-        Switch to {currentTheme === 'light' ? 'Dark' : 'Light'} Mode
-      </button>
+    <header className="header">
+      <h1 className="header-title">ReachInbox</h1>
+      <nav className="header-nav">
+        <a href="#home">Home</a>
+        <a href="#profile">Profile</a>
+        <a href="#settings">Settings</a>
+      </nav>
     </header>
   );
 };

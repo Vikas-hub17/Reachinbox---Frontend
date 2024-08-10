@@ -1,0 +1,26 @@
+/* src/components/Header.css */
+.header {
+    background-color: #002b36; /* Dark background color */
+    color: #ff7e7e; /* White text color */
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .header-title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .header-nav a {
+    color: #ffffff;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 16px;
+  }
+  
+  .header-nav a:hover {
+    text-decoration: underline;
+  }
+  

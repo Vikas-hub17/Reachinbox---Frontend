@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
 import { sendReply } from '../api';
 import 'react-quill/dist/quill.snow.css';
+import './Reply.css';
 
 function Reply({ threadId }) {
   const [editorContent, setEditorContent] = useState('');

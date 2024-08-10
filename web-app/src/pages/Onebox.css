@@ -1,0 +1,17 @@
+/* src/pages/Onebox.css */
+.onebox-container {
+    margin-left: 250px; /* Account for sidebar width */
+    padding: 20px;
+  }
+  
+  .onebox-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .onebox-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  

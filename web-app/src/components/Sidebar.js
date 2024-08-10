@@ -1,16 +1,16 @@
 // src/components/Sidebar.js
 import React from 'react';
+import './Sidebar.css';
 
 const Sidebar = () => {
   return (
-    <aside className="sidebar" style={{width:250, backgroundColor: '#343a40', color:'#ffffff'}}>
-      <nav>
-        <ul>
-          <li><a href="/onebox">Onebox</a></li>
-          <li><a href="/reply">Reply</a></li>
-          {/* Add more navigation items as needed */}
-        </ul>
-      </nav>
+    <aside className="sidebar">
+      <ul className="sidebar-menu">
+        <li><a href="#inbox">Inbox</a></li>
+        <li><a href="#sent">Sent</a></li>
+        <li><a href="#drafts">Drafts</a></li>
+        <li><a href="#trash">Trash</a></li>
+      </ul>
     </aside>
   );
 };
