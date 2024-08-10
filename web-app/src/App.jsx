@@ -6,7 +6,7 @@ import Sidebar from './components/Sidebar';
 import Login from './pages/Login';
 import Onebox from './pages/Onebox';
 import Reply from './pages/Reply';
-import theme from './theme';
+import './theme';
 import './App.css';
 
 function App() {

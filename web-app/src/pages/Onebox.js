@@ -1,6 +1,8 @@
 // src/pages/Onebox.js
 import React, { useEffect, useState } from 'react';
-import { fetchOneboxList, fetchThread, deleteThread } from '../api';
+// src/pages/Onebox.js
+import { fetchOneboxData } from '../api'; // Ensure the path is correct
+
 
 function Onebox() {
   const [threads, setThreads] = useState([]);

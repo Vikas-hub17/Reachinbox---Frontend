@@ -1,10 +1,9 @@
 // src/components/Sidebar.js
 import React from 'react';
-import './Sidebar.css'; // Add styles if needed
 
 const Sidebar = () => {
   return (
-    <aside className="sidebar">
+    <aside className="sidebar" style={{width:250, backgroundColor: '#343a40', color:'#ffffff'}}>
       <nav>
         <ul>
           <li><a href="/onebox">Onebox</a></li>

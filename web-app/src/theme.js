@@ -11,8 +11,6 @@ export const lightTheme = {
   
   // Usage in App.js
   import { ThemeProvider } from 'styled-components';
-  import { lightTheme } from './light.css';
-  import { darkTheme } from './dark.css';
   
   function App() {
     const [theme, setTheme] = useState('light');
