@@ -1,17 +1,30 @@
-/* src/pages/Onebox.css */
 .onebox-container {
-    margin-left: 250px; /* Account for sidebar width */
+    display: flex;
+    flex-direction: column;
     padding: 20px;
-  }
-  
-  .onebox-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .onebox-list {
+}
+
+.threads-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
-  }
-  
+}
+
+.thread-item {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.thread-item:hover {
+    background-color: #5f5e5e;
+}
+
+.thread-details {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
