@@ -2,8 +2,7 @@ import React from 'react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import FooterImage from '../assests/Frame 4.jpg'; // Adjust the path as needed
-import LogoImage from '../assests/Logo.png'; // Import the ReachInbox logo
+import logo from '../assests/Logo.png';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -17,15 +16,16 @@ const LoginContainer = styled.div`
 const Header = styled.header`
   position: absolute;
   top: 20px;
-  left: 20px;
+  left: 45%;
   img {
-    height: 40px; /* Adjust the height as needed */
+    height: 20px;
   }
 `;
 
 const LoginBox = styled.div`
+  margin:auto;
   background-color: #1a1a1a;
-  padding: 2rem;
+  padding: 3rem;
   border-radius: 8px;
   text-align: center;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
@@ -51,9 +51,8 @@ const Footer = styled.footer`
   margin-top: auto;
   padding: 1rem 0;
   text-align: center;
-  img {
-    max-width: 100%;
-  }
+  color: white;
+  font-size: 10px;
 `;
 
 const Login = () => {
@@ -68,7 +67,7 @@ const Login = () => {
     <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
       <LoginContainer>
         <Header>
-          <img src={LogoImage} alt="ReachInbox Logo" />
+            <img src={logo} alt='reachinbox-logo'></img>
         </Header>
         <LoginBox>
           <Title>Create a new account</Title>
@@ -84,7 +83,7 @@ const Login = () => {
           </p>
         </LoginBox>
         <Footer>
-          <img src={FooterImage} alt="Footer" />
+          &copy; 2024 All Rights Reserved
         </Footer>
       </LoginContainer>
     </GoogleOAuthProvider>

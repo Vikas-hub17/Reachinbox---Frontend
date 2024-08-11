@@ -1,15 +1,20 @@
-// src/theme.js
-import { useState } from 'react'; // Import statements should be at the top
+// src/components/ThemeToggle.jsx
 
-const theme = {
-  light: {
-    background: '#ffffff',
-    color: '#000000',
-  },
-  dark: {
-    background: '#000000',
-    color: '#ffffff',
-  },
+import React, { useState } from 'react';
+
+const ThemeToggle = () => {
+    const [darkMode, setDarkMode] = useState(true);
+
+    const toggleTheme = () => {
+        setDarkMode(!darkMode);
+        document.documentElement.classList.toggle('dark', !darkMode);
+    };
+
+    return (
+        <button onClick={toggleTheme}>
+            {darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+        </button>
+    );
 };
 
-export default theme;
+export default ThemeToggle;

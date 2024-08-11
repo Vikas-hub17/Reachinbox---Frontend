@@ -1,88 +1,54 @@
-import React, { useState, useEffect } from 'react';
+// src/pages/Onebox.jsx
+
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './Onebox.css'; // Add styling as per Figma
+import CustomTextEditor from '../components/TextEditor';
 
 const Onebox = () => {
     const [threads, setThreads] = useState([]);
     const [selectedThread, setSelectedThread] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
 
-    // Fetch Onebox list on component mount
     useEffect(() => {
-        fetchOneboxList();
+        // Fetch threads data on page load
+        axios.get('/api/onebox/list')
+            .then(response => {
+                setThreads(response.data);
+            })
+            .catch(error => console.error('Error fetching threads:', error));
     }, []);
 
-    // Fetch the list of threads
-    const fetchOneboxList = async () => {
-        try {
-            const response = await axios.get('/onebox/list');
-            setThreads(response.data);
-            setIsLoading(false);
-        } catch (error) {
-            console.error("Error fetching the onebox list:", error);
-            setIsLoading(false);
-        }
+    const handleDeleteThread = (threadId) => {
+        axios.delete(`/api/onebox/${threadId}`)
+            .then(() => {
+                setThreads(threads.filter(thread => thread.id !== threadId));
+            })
+            .catch(error => console.error('Error deleting thread:', error));
     };
 
-    // Fetch individual thread details
-    const fetchThread = async (threadId) => {
-        try {
-            const response = await axios.get(`/onebox/${threadId}`);
-            setSelectedThread(response.data);
-        } catch (error) {
-            console.error("Error fetching the thread:", error);
-        }
+    const handleReply = (threadId, replyData) => {
+        axios.post(`/api/reply/${threadId}`, replyData)
+            .then(response => {
+                console.log('Reply sent:', response.data);
+            })
+            .catch(error => console.error('Error sending reply:', error));
     };
 
-    // Delete a thread
-    const deleteThread = async (threadId) => {
-        try {
-            await axios.delete(`/onebox/${threadId}`);
-            fetchOneboxList(); // Refresh the list after deletion
-        } catch (error) {
-            console.error("Error deleting the thread:", error);
-        }
-    };
-
-    // Handle keyboard shortcuts
-    useEffect(() => {
-        const handleKeyDown = (event) => {
-            if (event.key === 'D' && selectedThread) {
-                deleteThread(selectedThread.id);
+    const handleKeyDown = (event) => {
+        if (event.key === 'D') {
+            if (selectedThread) {
+                handleDeleteThread(selectedThread.id);
             }
-            if (event.key === 'R' && selectedThread) {
-                // Logic to open reply box can be implemented here
+        } else if (event.key === 'R') {
+            if (selectedThread) {
+                // Open reply box (This could be a modal or inline editor)
             }
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [selectedThread]);
+        }
+    };
 
     return (
-        <div className="onebox-container">
-            {isLoading ? (
-                <p>Loading...</p>
-            ) : (
-                <div className="threads-list">
-                    {threads.map((thread) => (
-                        <div key={thread.id} className="thread-item" onClick={() => fetchThread(thread.id)}>
-                            <h3>{thread.subject}</h3>
-                            <p>{thread.snippet}</p>
-                        </div>
-                    ))}
-                </div>
-            )}
-            {selectedThread && (
-                <div className="thread-details">
-                    <h2>{selectedThread.subject}</h2>
-                    <p>{selectedThread.body}</p>
-                    {/* Implement reply functionality here */}
-                </div>
-            )}
+        <div className="onebox-container" onKeyDown={handleKeyDown} tabIndex="0">
+            {/* Render thread list and other components here */}
+            <CustomTextEditor onSave={(content) => handleReply(selectedThread.id, content)} />
         </div>
     );
 };
