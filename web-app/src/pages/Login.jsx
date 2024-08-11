@@ -64,7 +64,7 @@ const Login = () => {
   };
 
   return (
-    <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+    <GoogleOAuthProvider clientId="901000455878-o6sr7b6hhkteabc7fns483vqt1pplnjf.apps.googleusercontent.com">
       <LoginContainer>
         <Header>
             <img src={logo} alt='reachinbox-logo'></img>
