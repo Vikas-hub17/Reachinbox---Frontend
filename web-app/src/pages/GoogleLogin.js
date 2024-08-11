@@ -15,7 +15,7 @@ const GoogleLoginComponent = ({ onSuccess, onFailure }) => {
   return (
     <div className="google-login">
       <GoogleLogin
-        clientId="YOUR_GOOGLE_CLIENT_ID" // Replace with your Google Client ID
+        clientId="901000455878-o6sr7b6hhkteabc7fns483vqt1pplnjf.apps.googleusercontent.com" // Replace with your Google Client ID
         buttonText="Login with Google"
         onSuccess={handleSuccess}
         onFailure={handleFailure}
