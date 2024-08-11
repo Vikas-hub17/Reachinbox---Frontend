@@ -1,48 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { ThemeProvider, createGlobalStyle } from 'styled-components';
-import { FaInbox, FaMailBulk, FaRegCalendarCheck, FaChartBar, FaSun, FaMoon, FaReply, FaFacebookMessenger } from 'react-icons/fa';
+import { FaInbox, FaMailBulk, FaRegCalendarCheck, FaChartBar } from 'react-icons/fa';
 import styled from 'styled-components';
 import axios from 'axios';
-
-const lightTheme = {
-  backgroundColor: '#fff',
-  color: '#000',
-  sidebarBg: '#f0f0f0',
-  sidebarIconColor: '#555',
-  topNavBg: '#e6e6e6',
-  threadBg: '#fafafa',
-  buttonBg: '#4285f4',
-  buttonColor: '#fff',
-};
-
-const darkTheme = {
-  backgroundColor: '#000',
-  color: '#fff',
-  sidebarBg: '#1a1a1a',
-  sidebarIconColor: '#aaa',
-  topNavBg: '#333',
-  threadBg: '#333',
-  buttonBg: '#4285f4',
-  buttonColor: '#fff',
-};
-
-const GlobalStyle = createGlobalStyle`
-  body {
-    background-color: ${({ theme }) => theme.backgroundColor};
-    color: ${({ theme }) => theme.color};
-    margin: 0;
-    font-family: Arial, sans-serif;
-  }
-`;
 
 const OneboxContainer = styled.div`
   display: flex;
   height: 100vh;
+  background-color: ${(props) => (props.isDarkMode ? '#000' : '#fff')};
+  color: ${(props) => (props.isDarkMode ? '#fff' : '#000')};
 `;
 
 const Sidebar = styled.div`
   width: 80px;
-  background-color: ${({ theme }) => theme.sidebarBg};
+  background-color: ${(props) => (props.isDarkMode ? '#1a1a1a' : '#f0f0f0')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -52,10 +22,10 @@ const Sidebar = styled.div`
 const SidebarIcon = styled.div`
   font-size: 24px;
   margin: 20px 0;
-  color: ${({ theme }) => theme.sidebarIconColor};
+  color: ${(props) => (props.isDarkMode ? '#aaa' : '#555')};
   cursor: pointer;
   &:hover {
-    color: ${({ theme }) => theme.color};
+    color: ${(props) => (props.isDarkMode ? '#fff' : '#000')};
   }
 `;
 
@@ -71,21 +41,15 @@ const TopNav = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: ${({ theme }) => theme.topNavBg};
-  border-bottom: 1px solid ${({ theme }) => theme.sidebarBg};
+  background-color: ${(props) => (props.isDarkMode ? '#333' : '#e0e0e0')};
+  border-bottom: 1px solid ${(props) => (props.isDarkMode ? '#444' : '#ccc')};
 `;
 
 const WorkspaceDropdown = styled.div`
-  background-color: ${({ theme }) => theme.sidebarBg};
-  color: ${({ theme }) => theme.color};
+  background-color: ${(props) => (props.isDarkMode ? '#1a1a1a' : '#f0f0f0')};
+  color: ${(props) => (props.isDarkMode ? '#fff' : '#000')};
   padding: 10px;
   border-radius: 5px;
-`;
-
-const ThemeToggle = styled.div`
-  cursor: pointer;
-  font-size: 24px;
-  color: ${({ theme }) => theme.color};
 `;
 
 const ThreadContainer = styled.div`
@@ -95,24 +59,27 @@ const ThreadContainer = styled.div`
 const ThreadItem = styled.div`
   padding: 10px;
   margin-bottom: 10px;
-  background-color: ${({ theme }) => theme.threadBg};
+  background-color: ${(props) => (props.isDarkMode ? '#333' : '#f9f9f9')};
   border-radius: 5px;
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   &:hover {
-    background-color: ${({ theme }) => theme.sidebarBg};
+    background-color: ${(props) => (props.isDarkMode ? '#444' : '#ddd')};
   }
 `;
 
 const ThreadDetails = styled.div`
   margin-top: 20px;
   padding: 20px;
-  background-color: ${({ theme }) => theme.sidebarBg};
+  background-color: ${(props) => (props.isDarkMode ? '#1a1a1a' : '#f0f0f0')};
   border-radius: 5px;
 `;
 
 const Button = styled.button`
-  background-color: ${({ theme }) => theme.buttonBg};
-  color: ${({ theme }) => theme.buttonColor};
+  background-color: #4285f4;
+  color: #fff;
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
@@ -120,7 +87,6 @@ const Button = styled.button`
 `;
 
 const Onebox = () => {
-  const [theme, setTheme] = useState('dark');
   const [fromEmail, setFromEmail] = useState('');
   const [toEmail, setToEmail] = useState('');
   const [subject, setSubject] = useState('');
@@ -128,20 +94,17 @@ const Onebox = () => {
   const [threads, setThreads] = useState([]);
   const [selectedThread, setSelectedThread] = useState(null);
   const [workspace] = useState('My Workspace');
-  const [isMailListVisible, setIsMailListVisible] = useState(false);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
   const [isMailFormVisible, setIsMailFormVisible] = useState(false);
-  // Toggle theme between light and dark
-  const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
-  };
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [isMailListVisible, setIsMailListVisible] = useState(false);
 
-  // Fetch threads on component mount
   useEffect(() => {
     const fetchThreads = async () => {
       try {
-        const token = '•••••••';  // Make sure the token is correct
+        setLoading(true);
+        const token = '•••••••';
         const response = await axios.get('https://hiring.reachinbox.xyz/api/v1/onebox/list', {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -149,148 +112,107 @@ const Onebox = () => {
         });
         setThreads(response.data);
       } catch (error) {
-        console.error('Error fetching threads:', error.response?.data || error.message);
+        setError('Error fetching threads.');
+        console.error('Error fetching threads:', error);
+      } finally {
+        setLoading(false);
       }
     };
-  
+
     fetchThreads();
   }, []);
-  
 
   const handleSendReply = async () => {
-    if (!selectedThread) {
-      console.error('No thread selected.');
-      return;
-    }
-
     try {
       const response = await axios.post(`https://hiring.reachinbox.xyz/api/v1/onebox/reply/${selectedThread.id}`, {
         from: fromEmail,
         to: toEmail,
         subject: subject,
-        body: bodyContent, // Assuming the body content is HTML
+        body: bodyContent,
       });
       console.log('Reply sent successfully:', response.data);
-      setIsMailFormVisible(false); // Hide the mail form after sending
-      setFromEmail('');
-      setToEmail('');
-      setSubject('');
-      setBodyContent(''); // Clear the form after sending the reply
+      setIsMailFormVisible(false);
     } catch (error) {
+      setError('Error sending reply.');
       console.error('Error sending reply:', error);
     }
   };
 
-  // Fetch details of a selected thread
   const fetchThreadDetails = async (thread_id) => {
     try {
-      const token = '•••••••';  // Ensure the token is correct
-      const response = await axios.get(`https://hiring.reachinbox.xyz/api/v1/onebox/messages/${thread_id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      setLoading(true);
+      const response = await axios.get(`https://hiring.reachinbox.xyz/api/v1/onebox/messages/${thread_id}`);
       setSelectedThread(response.data);
       setIsMailFormVisible(false);
     } catch (error) {
-      console.error('Error fetching thread details:', error.response?.data || error.message);
+      setError('Error fetching thread details.');
+      console.error('Error fetching thread details:', error);
+    } finally {
+      setLoading(false);
     }
   };
-  
 
-  // Delete a thread
   const deleteThread = async (thread_id) => {
     try {
-      const token = '•••••••';  // Ensure the token is correct
-      await axios.delete(`https://hiring.reachinbox.xyz/api/v1/onebox/messages/${thread_id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setThreads(prevThreads => prevThreads.filter(thread => thread.id !== thread_id));
+      await axios.delete(`https://hiring.reachinbox.xyz/api/v1/onebox/messages/${thread_id}`);
+      setThreads((prevThreads) => prevThreads.filter((thread) => thread.id !== thread_id));
       if (selectedThread && selectedThread.id === thread_id) {
         setSelectedThread(null);
       }
     } catch (error) {
-      console.error('Error deleting thread:', error.response?.data || error.message);
+      setError('Error deleting thread.');
+      console.error('Error deleting thread:', error);
     }
   };
-  
 
   const handleMailBulkClick = () => {
     setIsMailListVisible(!isMailListVisible);
   };
 
-
   return (
-    <ThemeProvider theme={theme === 'dark' ? darkTheme : lightTheme}>
-      <GlobalStyle />
-      <OneboxContainer>
-        <Sidebar>
-          <SidebarIcon onClick={() => setIsMailFormVisible(!isMailFormVisible)}><FaReply /></SidebarIcon>
-          <SidebarIcon onClick={fetchThreads}><FaMailBulk /></SidebarIcon>
-          <SidebarIcon><FaRegCalendarCheck /></SidebarIcon>
-          <SidebarIcon><FaChartBar /></SidebarIcon>
-          <SidebarIcon><FaInbox></FaInbox></SidebarIcon>
-        </Sidebar>
+    <OneboxContainer isDarkMode={isDarkMode}>
+      <Sidebar isDarkMode={isDarkMode}>
+        <SidebarIcon onClick={() => setIsMailFormVisible(!isMailFormVisible)}><FaInbox /></SidebarIcon>
+        <SidebarIcon onClick={handleMailBulkClick}><FaMailBulk /></SidebarIcon>
+        <SidebarIcon><FaRegCalendarCheck /></SidebarIcon>
+        <SidebarIcon><FaChartBar /></SidebarIcon>
+      </Sidebar>
 
-        <MainContent>
-          <TopNav>
-            <WorkspaceDropdown>{workspace}</WorkspaceDropdown>
-            <ThemeToggle onClick={toggleTheme}>
-              {theme === 'dark' ? <FaSun /> : <FaMoon />}
-            </ThemeToggle>
-          </TopNav>
+      <MainContent>
+        <TopNav isDarkMode={isDarkMode}>
+          <div>
+            <WorkspaceDropdown isDarkMode={isDarkMode}>{workspace}</WorkspaceDropdown>
+          </div>
+          <div>
+            <label>
+              <input type="checkbox" checked={isDarkMode} onChange={() => setIsDarkMode(!isDarkMode)} />
+              {isDarkMode ? '🌙' : '🌞'}
+            </label>
+          </div>
+        </TopNav>
 
+        {isMailListVisible && (
           <ThreadContainer>
-            {threads.map(thread => (
-              <ThreadItem key={thread.id} onClick={() => fetchThreadDetails(thread.id)}>
+            {loading && <p>Loading threads...</p>}
+            {error && <p>{error}</p>}
+            {threads.map((thread) => (
+              <ThreadItem key={thread.id} onClick={() => fetchThreadDetails(thread.id)} isDarkMode={isDarkMode}>
                 <p>{thread.subject}</p>
-                <Button onClick={(e) => deleteThread(thread.id, e)}>Delete</Button>
+                <Button onClick={(e) => { e.stopPropagation(); deleteThread(thread.id); }}>Delete</Button>
               </ThreadItem>
             ))}
           </ThreadContainer>
+        )}
 
-          {selectedThread && (
-            <ThreadDetails>
-              <h2>{selectedThread.subject}</h2>
-              <p>{selectedThread.body}</p>
-              <Button onClick={() => setIsMailFormVisible(true)}>Reply</Button>
-            </ThreadDetails>
-          )}
-
-          {isMailFormVisible && (
-            <div>
-              <h3>Reply to {selectedThread ? selectedThread.subject : 'New Email'}</h3>
-              <input
-                type="text"
-                placeholder="From"
-                value={fromEmail}
-                onChange={(e) => setFromEmail(e.target.value)}
-              />
-              <input
-                type="text"
-                placeholder="To"
-                value={toEmail}
-                onChange={(e) => setToEmail(e.target.value)}
-              />
-              <input
-                type="text"
-                placeholder="Subject"
-                value={subject}
-                onChange={(e) => setSubject(e.target.value)}
-              />
-              <textarea
-                placeholder="Body"
-                value={bodyContent}
-                onChange={(e) => setBodyContent(e.target.value)}
-              />
-              <Button onClick={handleSendReply}>Send</Button>
-            </div>
-          )}
-        </MainContent>
-      </OneboxContainer>
-    </ThemeProvider>
+        {selectedThread && (
+          <ThreadDetails isDarkMode={isDarkMode}>
+            <h2>{selectedThread.subject}</h2>
+            <p>{selectedThread.body}</p>
+            <Button onClick={() => setIsMailFormVisible(true)}>Reply</Button>
+          </ThreadDetails>
+        )}
+      </MainContent>
+    </OneboxContainer>
   );
 };
 
