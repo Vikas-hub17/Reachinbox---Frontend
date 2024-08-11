@@ -19,27 +19,3 @@ Dark Mode UI: A user-friendly dark mode user interface.
 - npm install or
 yarn install
 
-Configuration
-API Configuration
-The application requires a Bearer Token to authenticate API requests. Set up the token in your environment variables.
-
-bash
-Copy code
-REACT_APP_API_TOKEN=your_bearer_token
-Environment Variables
-Create a .env file in the root directory of the project and add the following:
-
-
-REACT_APP_API_BASE_URL=https://hiring.reachinbox.xyz/api/v1
-REACT_APP_API_TOKEN=your_bearer_token
-Usage
-Running the Application
-To start the development server, run:
-
-bash
-Copy code
-npm start
-# or
-yarn start
-The application will be available at http://localhost:3000.
-
